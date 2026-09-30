@@ -2,7 +2,7 @@
  * e no código alfanumérico (Codigo) que o próprio eleitor copia ou compartilha. */
 (function () {
   var $ = function (s, r) { return (r || document).querySelector(s); };
-  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v3/";
+  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v2/"; var CDN_DADOS = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v3/";
   var FED = { num: 1002, nome: "MARCO VINHOLI", partido: "REPUBLICANOS", sq: "250002537984" };
   var CARGOS = [
     { k: "fed", rot: "DEPUTADO FEDERAL", lista: "fed", fixo: true },
@@ -23,7 +23,7 @@
   /* ---------- dados ---------- */
   function carregarDados() {
     return fetch("dados/candidatos.json").then(function (r) { if (!r.ok) throw 0; return r.json(); })
-      .catch(function () { return fetch(CDN + "dados/candidatos.json").then(function (r) { return r.json(); }); })
+      .catch(function () { return fetch(CDN_DADOS + "dados/candidatos.json").then(function (r) { return r.json(); }); })
       .then(function (j) {
         dados = {}; ["fed", "est", "sen", "gov", "pres"].forEach(function (k) { dados[k] = objs(j[k] || []); });
         dados.part = (j.part || []).map(function (a) { return { num: a[0], sigla: a[1], nome: a[2], n: norm(a[1] + " " + a[2]), s: norm(a[1]) }; });

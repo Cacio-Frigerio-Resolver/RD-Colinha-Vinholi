@@ -1,7 +1,7 @@
 /* Desenho da colinha em canvas (sem bibliotecas).
  * modos: "cor" (colorida), "pb" (preto e branco), "grande" (P&B, números grandes). */
 (function (g) {
-  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v3/fotos/";
+  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v2/fotos/";
   var LOCAL = "fotos/";
   var FONTE = "Montserrat, 'Arial Black', Arial, sans-serif";
   var LEGAL1 = "Marco Vinholi, candidato a Deputado Federal por São Paulo, nº 1002 — Republicanos";
