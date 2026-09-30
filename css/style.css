@@ -135,7 +135,7 @@ img,svg,canvas{max-width:100%}
 
 /* ações */
 .acoes{max-width:1080px;margin:30px auto 0;text-align:center}
-.acoes h3{font-size:22px;margin-bottom:16px}
+.acoes h2{font-size:22px;margin-bottom:16px}
 .acoes__linha{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 22px}
 .grupo{display:flex;flex-direction:column;align-items:center;gap:8px}
 .grupo__rot{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
@@ -177,32 +177,23 @@ img,svg,canvas{max-width:100%}
 #printArea{display:none}
 
 /* ---------- impressão: só a folha A4 montada em canvas ---------- */
-@page{size:210mm 297mm;margin:0}
+@page{size:A4 portrait;margin:0}
 @media print{
-  html,body{background:#fff;margin:0;padding:0;width:210mm;height:297mm;overflow:hidden}
+  html,body{background:#fff;margin:0;padding:0;height:100%;overflow:hidden}
   body>*:not(#printArea){display:none!important}
-  #printArea{display:block!important;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;page-break-after:avoid}
-  #printArea img{display:block;width:210mm;height:297mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printArea{display:block!important;position:fixed;inset:0;margin:0;padding:0;overflow:hidden}
+  #printArea img{display:block;width:100%;height:100%;object-fit:contain;object-position:top left;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 
-/* ---------- seção Monte a sua colinha: fundo branco ---------- */
-.monte{background:#fff;color:var(--tx)}
-.monte__cab h2{color:var(--azesc)}
-.monte__cab b{color:var(--az)}
-.monte .chip{background:var(--az);color:#fff}
-.monte .carregando{color:var(--mut)}
-.monte .codigo-bar{background:#eef3fb;border:1px solid #d5deee}
-.monte .codigo-bar input{border:2px solid #c9d3e6}
-.monte .cargo{border:1px solid #dfe6f2;box-shadow:0 4px 14px rgba(6,38,77,.08)}
-.monte .cargo--fixo{border-color:var(--am)}
-.monte .vidro{background:#eef3fb;border:1px solid #d5deee;color:var(--tx);backdrop-filter:none}
-.monte .seg{background:#dfe6f2}
-.monte .seg__op span{color:var(--azesc)}
-.monte .seg__op input:checked+span{background:var(--am);color:var(--azesc)}
-.monte .seg__op input:focus-visible+span{outline-color:var(--az)}
-.monte .tg input{accent-color:var(--az)}
-.monte .codigo__valor{border:2px solid #d5deee}
-.monte .btn--ghost{border-color:var(--az);color:var(--az)}
-.monte .acoes h3{color:var(--azesc)}
-.monte .grupo__rot{color:var(--mut)}
-.monte .acoes__nota{color:var(--mut)}
+/* acessibilidade e FAQ */
+.pular{position:absolute;left:-999px;top:0;z-index:100;background:var(--am);color:var(--azesc);padding:10px 16px;font-weight:800}
+.pular:focus{left:8px;top:8px}
+:focus-visible{outline:3px solid var(--am);outline-offset:2px}
+.faq{max-width:860px;margin:0 auto;padding:44px 16px 52px}
+.faq h2{font-size:clamp(26px,4vw,34px);color:var(--azesc);text-align:center;margin-bottom:20px}
+.faq details{background:#fff;border:1px solid #dfe6f2;border-radius:16px;padding:0 18px;margin-bottom:10px}
+.faq summary{cursor:pointer;font-weight:800;color:var(--azesc);padding:16px 0;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::after{content:"+";font-family:"Archivo Black",sans-serif;color:var(--az)}
+.faq details[open] summary::after{content:"–"}
+.faq summary::-webkit-details-marker{display:none}
+.faq details p{margin:0 0 16px;color:#3a4256}

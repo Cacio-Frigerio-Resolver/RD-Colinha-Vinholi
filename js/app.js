@@ -191,20 +191,21 @@
   var SITE = /^(localhost|127\.)/.test(location.hostname) ? "https://www.marcovinholi.com.br/colinha/" : location.origin + location.pathname;
   function textoZap() {
     return "Essa é a minha colinha! 🗳️ Já sei em quem votar e não erro na urna." +
-      "\nMonte a sua em 1 minuto: " + SITE +
+      "\n👉 Monte a sua em 1 minuto: " + SITE +
       "\n\nMeu código (copie e cole no site para gerar igual):\n" + codigoAtual();
   }
-  // Envia a IMAGEM da colinha (com o texto e o código)
+  // Envia a IMAGEM da colinha. Alguns apps ignoram a legenda quando há arquivo; por isso ela também é copiada.
   acao("#btnZap", function (e) {
     var texto = textoZap();
     Exportar.blobJpg(Render.card(e, modo, fotosOn, grande), 0.92).then(function (b) {
       var arq = new File([b], nomeArq(".jpg"), { type: "image/jpeg" });
+      try { if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(texto); } catch (x) {}
       if (navigator.canShare && navigator.canShare({ files: [arq] })) {
-        navigator.share({ files: [arq], text: texto }).catch(function () {});
+        navigator.share({ files: [arq], title: "Minha colinha - Marco Vinholi 1002", text: texto }).catch(function () {});
       } else {
         Exportar.baixar(b, nomeArq(".jpg"));
         window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank", "noopener");
-        aviso("Imagem baixada. Anexe no WhatsApp.");
+        aviso("Imagem baixada. Anexe no WhatsApp; a legenda já está no campo de texto.");
       }
     });
   });
@@ -235,7 +236,7 @@
     modo = $("input[name=estilo]:checked").value; grande = $("#numGrandes").checked; fotosOn = $("#comFoto").checked; agendar();
   }
   Array.prototype.forEach.call(document.querySelectorAll("input[name=estilo]"), function (r) {
-    r.addEventListener("change", function () { $("#comFoto").checked = r.value === "cor"; ajustarEstilo(); });
+    r.addEventListener("change", ajustarEstilo);
   });
   $("#comFoto").addEventListener("change", ajustarEstilo);
   $("#numGrandes").addEventListener("change", ajustarEstilo);
