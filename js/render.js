@@ -1,7 +1,7 @@
 /* Desenho da colinha em canvas (sem bibliotecas).
  * modos: "cor" (colorida), "pb" (preto e branco), "grande" (P&B, números grandes). */
 (function (g) {
-  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v2/fotos/";
+  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v3/fotos/";
   var LOCAL = "fotos/";
   var FONTE = "Montserrat, 'Arial Black', Arial, sans-serif";
   var LEGAL1 = "Marco Vinholi, candidato a Deputado Federal por São Paulo, nº 1002 — Republicanos";
@@ -95,7 +95,14 @@
     var fixo = r.fixo;
     bloco(c, G.x, G.y, G.w, G.h, 34, fixo ? T.fixoFill : T.linha, fixo ? T.fixoBorda : T.linhaBorda, fixo ? 5 : 3);
     var tx = G.x + 22;
-    if (G.fotosOn) { foto(c, T, r.tipo === "cand" ? r.cand.sq : null, G.x + 18, G.y + (G.h - G.fotoLado) / 2, G.fotoLado, 26); tx = G.x + 18 + G.fotoLado + 24; }
+    if (G.fotosOn) {
+      var fy = G.y + (G.h - G.fotoLado) / 2;
+      if (r.tipo === "cand" && r.cand.legenda) {
+        bloco(c, G.x + 18, fy, G.fotoLado, G.fotoLado, 26, T === COR ? "#0a4fb0" : "#fff", T.fotoBorda, 6);
+        texto(c, r.cand.sigla, G.x + 18 + G.fotoLado / 2, fy + G.fotoLado / 2, 900, 40, T === COR ? "#ffc82c" : "#000", "center", G.fotoLado - 16);
+      } else foto(c, T, r.tipo === "cand" ? r.cand.sq : null, G.x + 18, fy, G.fotoLado, 26);
+      tx = G.x + 18 + G.fotoLado + 24;
+    }
     var maxW = G.x + G.w - 22 - tx;
     var cargo = r.rot, nome = r.tipo === "cand" ? r.cand.nome : (r.tipo === "branco" ? "" : "");
     var ly = G.y + G.labelY;

@@ -2,11 +2,11 @@
  * e no código alfanumérico (Codigo) que o próprio eleitor copia ou compartilha. */
 (function () {
   var $ = function (s, r) { return (r || document).querySelector(s); };
-  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v2/";
+  var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v3/";
   var FED = { num: 1002, nome: "MARCO VINHOLI", partido: "REPUBLICANOS", sq: "250002537984" };
   var CARGOS = [
     { k: "fed", rot: "DEPUTADO FEDERAL", lista: "fed", fixo: true },
-    { k: "est", rot: "DEPUTADO ESTADUAL", lista: "est" },
+    { k: "est", rot: "DEPUTADO ESTADUAL", lista: "est", legenda: true },
     { k: "sen1", rot: "SENADOR (A)", lista: "sen" },
     { k: "sen2", rot: "SENADOR (A)", lista: "sen" },
     { k: "gov", rot: "GOVERNADOR (A)", lista: "gov" },
@@ -16,7 +16,8 @@
   var dados = null, st = {}, modo = "cor", fotosOn = true;
 
   var norm = function (s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
-  function objs(arr) { return arr.map(function (a) { return { num: a[0], nome: a[1], partido: a[2], sq: a[3], n: norm(a[1]) }; }); }
+  function objs(arr) { return arr.map(function (a) { return { num: a[0], nome: a[1], partido: a[2], sq: a[3], n: norm(a[1]), p: norm(a[2]) }; }); }
+  function candLegenda(p) { return { num: p.num, nome: "VOTAR NO PARTIDO " + p.sigla, partido: "", sq: "", legenda: true, sigla: p.sigla }; }
   function achar(lista, num) { var l = dados[lista]; for (var i = 0; i < l.length; i++) if (l[i].num === num) return l[i]; return null; }
 
   /* ---------- dados ---------- */
@@ -25,6 +26,7 @@
       .catch(function () { return fetch(CDN + "dados/candidatos.json").then(function (r) { return r.json(); }); })
       .then(function (j) {
         dados = {}; ["fed", "est", "sen", "gov", "pres"].forEach(function (k) { dados[k] = objs(j[k] || []); });
+        dados.part = (j.part || []).map(function (a) { return { num: a[0], sigla: a[1], nome: a[2], n: norm(a[1] + " " + a[2]), s: norm(a[1]) }; });
         var f = achar("fed", 1002); if (f) FED = f;
       });
   }
@@ -45,7 +47,11 @@
     var o = Codigo.decodificar(txt); if (!o) return false;
     CARGOS.forEach(function (c) {
       if (c.fixo) return;
-      var v = o[c.k], cand = typeof v === "number" ? achar(c.lista, v) : null;
+      var v = o[c.k], cand = null;
+      if (typeof v === "number") {
+        if (c.legenda && v < 100) { var pt = dados.part.filter(function (x) { return x.num === v; })[0]; cand = pt ? candLegenda(pt) : null; }
+        else cand = achar(c.lista, v);
+      }
       st[c.k] = v === "branco" ? { tipo: "branco" } : cand ? { tipo: "cand", cand: cand } : { tipo: "vazio" };
     });
     return true;
@@ -66,7 +72,7 @@
         '<div class="cargo__foto"></div><div class="cargo__corpo">' +
         '<div class="cargo__titulo"><span class="cargo__rot">' + c.rot + '</span> <strong class="cargo__nome"></strong></div>' +
         '<div class="cargo__num"></div>' +
-        '<div class="cargo__busca"><input type="text" inputmode="search" autocomplete="off" placeholder="Digite o nome ou o número" aria-label="Buscar ' + c.rot.toLowerCase() + '"><ul class="lista" role="listbox" hidden></ul></div>' +
+        '<div class="cargo__busca"><input type="text" inputmode="search" autocomplete="off" placeholder="Digite o nome, o número ou a sigla do partido" aria-label="Buscar ' + c.rot.toLowerCase() + '"><ul class="lista" role="listbox" hidden></ul></div>' +
         '<div class="cargo__acoes"></div></div>';
       elCargos.appendChild(li);
       ligarBusca(c, li);
@@ -79,13 +85,13 @@
     var foto = $(".cargo__foto", li), nome = $(".cargo__nome", li), num = $(".cargo__num", li), busca = $(".cargo__busca", li), ac = $(".cargo__acoes", li);
     li.dataset.tipo = s.tipo; foto.innerHTML = ""; num.innerHTML = ""; ac.innerHTML = "";
     if (s.tipo === "cand") {
-      var im = new Image(); im.alt = s.cand.nome; im.src = fotoUrl(s.cand.sq); im.onerror = function () { im.remove(); }; foto.appendChild(im);
+      if (s.cand.legenda) { foto.innerHTML = "<b class='sigla'></b>"; $(".sigla", foto).textContent = s.cand.sigla; }
+      else { var im = new Image(); im.alt = s.cand.nome; im.src = fotoUrl(s.cand.sq); im.onerror = function () { im.remove(); }; foto.appendChild(im); }
       nome.textContent = s.cand.nome + (s.cand.partido ? " · " + s.cand.partido : "");
       String(s.cand.num).split("").forEach(function (d) { var b = document.createElement("i"); b.textContent = d; num.appendChild(b); });
       var ok = document.createElement("span"); ok.className = "confirma"; ok.textContent = "CONFIRMA"; num.appendChild(ok);
       busca.hidden = true;
-      if (c.fixo) { var f = document.createElement("span"); f.className = "fixo"; f.textContent = "Candidato fixo"; ac.appendChild(f); }
-      else ac.appendChild(botaoTxt("Limpar / Alterar", function () { st[k] = { tipo: "vazio" }; pintar(k); $("input", li).focus(); mudou(); }));
+      if (!c.fixo) ac.appendChild(botaoTxt("Limpar / Alterar", function () { st[k] = { tipo: "vazio" }; pintar(k); $("input", li).focus(); mudou(); }));
     } else if (s.tipo === "branco") {
       nome.textContent = "";
       num.innerHTML = '<span class="branco-box">VOTO EM BRANCO</span><span class="confirma confirma--branco">BRANCO</span>';
@@ -106,16 +112,23 @@
     function outro() { return c.k === "sen1" ? st.sen2 : c.k === "sen2" ? st.sen1 : null; }
     function abrir() {
       var q = norm(inp.value.trim()); if (!q) { fechar(); return; }
-      var o = outro(), ex = o && o.tipo === "cand" ? o.cand.num : -1, l = dados[c.lista], r;
-      if (/^\d+$/.test(q)) r = l.filter(function (x) { return String(x.num).indexOf(q) === 0 && x.num !== ex; }).sort(function (a, b) { return a.num - b.num; });
-      else r = l.filter(function (x) { return x.n.indexOf(q) >= 0 && x.num !== ex; }).sort(function (a, b) { return (a.n.indexOf(q) !== 0) - (b.n.indexOf(q) !== 0) || a.n.localeCompare(b.n); });
-      r = r.slice(0, 8); itens = r; ativo = -1; ul.innerHTML = "";
+      var o = outro(), ex = o && o.tipo === "cand" ? o.cand.num : -1, l = dados[c.lista], r, pts = [];
+      if (/^\d+$/.test(q)) {
+        r = l.filter(function (x) { return String(x.num).indexOf(q) === 0 && x.num !== ex; }).sort(function (a, b) { return a.num - b.num; });
+        if (c.legenda) pts = dados.part.filter(function (p) { return String(p.num).indexOf(q) === 0; });
+      } else {
+        r = l.filter(function (x) { return (x.n.indexOf(q) >= 0 || x.p.indexOf(q) >= 0) && x.num !== ex; })
+          .sort(function (a, b) { return (a.p !== q) - (b.p !== q) || (a.n.indexOf(q) !== 0) - (b.n.indexOf(q) !== 0) || a.n.localeCompare(b.n); });
+        if (c.legenda) pts = dados.part.filter(function (p) { return p.n.indexOf(q) >= 0; }).sort(function (a, b) { return (a.s !== q) - (b.s !== q); });
+      }
+      r = pts.slice(0, 3).map(candLegenda).concat(r).slice(0, 9);
+      itens = r; ativo = -1; ul.innerHTML = "";
       if (!r.length) { ul.innerHTML = '<li class="lista__vazio">Nenhum candidato encontrado</li>'; ul.hidden = false; return; }
       r.forEach(function (x, i) {
         var it = document.createElement("li"); it.setAttribute("role", "option");
-        it.innerHTML = '<img loading="lazy" src="' + fotoUrl(x.sq) + '" alt=""><span class="lista__nome"></span><span class="lista__num"></span>';
+        it.innerHTML = (x.legenda ? '<b class="sigla sigla--peq"></b>' : '<img loading="lazy" src="' + fotoUrl(x.sq) + '" alt="">') + '<span class="lista__nome"></span><span class="lista__num"></span>';
         $(".lista__nome", it).textContent = x.nome + (x.partido ? " · " + x.partido : ""); $(".lista__num", it).textContent = x.num;
-        $("img", it).onerror = function () { this.style.visibility = "hidden"; };
+        if (x.legenda) $(".sigla", it).textContent = x.sigla; else $("img", it).onerror = function () { this.style.visibility = "hidden"; };
         it.addEventListener("mousedown", function (e) { e.preventDefault(); escolher(x); });
         ul.appendChild(it);
       });

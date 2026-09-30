@@ -20,7 +20,8 @@
 <main>
   <section class="intro">
     <h1>Para não errar na hora do voto</h1>
-    <p>Monte sua colinha, baixe, imprima ou envie pelo WhatsApp. <strong>Nada é gravado</strong>: tudo fica no seu aparelho.</p>
+    <p>Monte sua colinha, baixe, imprima ou envie pelo WhatsApp.</p>
+    <p><strong>Nada é gravado</strong>: tudo fica no seu aparelho.</p>
   </section>
 
   <p id="carregando" class="carregando">Carregando candidatos…</p>
@@ -51,16 +52,33 @@
     <canvas id="previa" width="1080" height="1965" aria-label="Pré-visualização da colinha"></canvas>
   </section>
 
+  <section class="painel familia">
+    <h2>Versão família — 4 colinhas por folha A4</h2>
+    <p class="dica">A mesma colinha repetida 4 vezes na folha, com linhas de corte. Ideal para toda a família.</p>
+    <div class="grupo__btns">
+      <button type="button" id="btnPdf4" class="btn btn--amarelo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M6 2h9l5 5v15H6zM14 2v6h6M9 14h6M9 18h6"/></svg><span>Baixar PDF — 4 por folha</span></button>
+      <button type="button" id="btnPrint4" class="btn btn--amarelo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/></svg><span>Imprimir 4 por folha</span></button>
+    </div>
+  </section>
+
+
   <section class="painel acoes">
     <h2>Compartilhar, baixar e imprimir</h2>
-    <button type="button" id="btnZap" class="btn btn--zap">Enviar pelo WhatsApp</button>
-    <button type="button" id="btnLink" class="btn">Copiar link</button>
-    <button type="button" id="btnJpg" class="btn">Baixar imagem (JPG)</button>
-    <button type="button" id="btnPdf1" class="btn">Baixar PDF — 1 por folha</button>
-    <button type="button" id="btnPdf4" class="btn">Baixar PDF — 4 por folha</button>
-    <button type="button" id="btnPrint1" class="btn">Imprimir</button>
-    <button type="button" id="btnPrint4" class="btn">Imprimir 4 por folha</button>
+    <div class="acoes__linha">
+      <div class="grupo"><span class="grupo__rot">Compartilhar</span><div class="grupo__btns">
+        <button type="button" id="btnZap" class="btn btn--zap"><svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3C8.8 3 3 8.8 3 16c0 2.3.6 4.5 1.7 6.4L3 29l6.8-1.8A13 13 0 0 0 16 29c7.2 0 13-5.8 13-13S23.2 3 16 3Zm0 23.6c-2 0-3.9-.6-5.5-1.6l-.4-.2-4 1 1.1-3.9-.3-.4A10.600 10.600 0 1 1 16 26.600Zm5.800-7.900c-.3-.2-1.900-.9-2.200-1s-.5-.2-.7.2-.8 1-1 1.200-.4.200-.700.100a8.700 8.700 0 0 1-4.300-3.800c-.3-.6.300-.500.900-1.700.1-.2 0-.4 0-.500l-1-2.300c-.3-.6-.500-.500-.700-.500h-.600c-.2 0-.5.100-.8.400s-1 1-1 2.500 1.100 2.900 1.200 3.100c.2.200 2.100 3.300 5.200 4.500 2 .8 2.800.9 3.800.7.600-.1 1.900-.8 2.100-1.500s.3-1.400.2-1.500-.3-.3-.6-.4Z"/></svg><span>WhatsApp</span></button>
+        <button type="button" id="btnLink" class="btn btn--navy"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M10 14a4.500 4.500 0 0 0 6.400 0l3-3a4.500 4.500 0 0 0-6.400-6.400l-1.100 1.100M14 10a4.500 4.500 0 0 0-6.400 0l-3 3a4.500 4.500 0 0 0 6.400 6.400l1.100-1.100"/></svg><span>Copiar link</span></button>
+      </div></div>
+      <div class="grupo"><span class="grupo__rot">Baixar</span><div class="grupo__btns">
+        <button type="button" id="btnJpg" class="btn btn--azul"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 3v11m0 0-4-4m4 4 4-4M4 17v3h16v-3"/></svg><span>Imagem JPG</span></button>
+        <button type="button" id="btnPdf1" class="btn btn--azul"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M6 2h9l5 5v15H6zM14 2v6h6M9 14h6M9 18h6"/></svg><span>PDF A4</span></button>
+      </div></div>
+      <div class="grupo"><span class="grupo__rot">Imprimir</span><div class="grupo__btns">
+        <button type="button" id="btnPrint1" class="btn btn--print"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/></svg><span>Imprimir</span></button>
+      </div></div>
+    </div>
   </section>
+
 </main>
 
 <footer class="rodape">

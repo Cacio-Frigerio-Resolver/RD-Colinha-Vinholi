@@ -65,7 +65,9 @@ def main():
     (RAIZ / "fotos").mkdir(exist_ok=True)
     saida = {c: {} for c in CARGOS.values()}
     sem_foto = 0
+    partidos = {}
     for c, uf, r in linhas:
+        if c == "est": partidos[int(r["NR_PARTIDO"])] = [int(r["NR_PARTIDO"]), r["SG_PARTIDO"], r["NM_PARTIDO"]]
         nr = r["NR_CANDIDATO"]; nome = r["NM_URNA_CANDIDATO"].strip(); sq = r["SQ_CANDIDATO"]
         # TSE traz números duplicados (mesmo nº/nome com SQ diferente): fica o 1º
         if (nr, nome) in saida[c]: continue
@@ -80,6 +82,7 @@ def main():
     out = {"uf": UF, "ano": 2026, "fonte": "TSE - Dados Abertos (consulta_cand_2026)"}
     for c, d in saida.items():
         out[c] = sorted(d.values(), key=lambda x: (x[1], x[0]))
+    out["part"] = sorted(partidos.values())   # voto de legenda (só cargos proporcionais)
     (RAIZ / "dados").mkdir(exist_ok=True)
     (RAIZ / "dados" / "candidatos.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print({c: len(v) for c, v in saida.items()}, "sem_foto:", sem_foto)

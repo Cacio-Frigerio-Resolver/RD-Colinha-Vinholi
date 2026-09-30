@@ -4,9 +4,11 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;font-family:Montserrat,system-ui,Arial,sans-serif;color:var(--txt);background:#f4f6fb;font-size:17px;line-height:1.4}
 .topo{background:var(--azul);color:#fff;display:flex;align-items:center;gap:12px;padding:8px 16px;font-weight:800;font-size:18px}
 .topo img{height:40px;width:auto}
-main{max-width:640px;margin:0 auto;padding:16px}
+main{max-width:760px;margin:0 auto;padding:16px}
+.intro{text-align:center}
 .intro h1{font-size:26px;font-weight:900;margin:8px 0 4px;color:var(--navy)}
-.intro p{margin:0 0 16px;color:var(--mut)}
+.intro p{margin:0;color:var(--mut)}
+.intro p:last-child{margin-bottom:16px}
 .carregando{text-align:center;color:var(--mut)}
 .cargos{display:grid;gap:12px}
 .cargo{display:flex;gap:12px;background:var(--cinza);border-radius:20px;padding:12px;align-items:flex-start}
@@ -31,7 +33,6 @@ main{max-width:640px;margin:0 auto;padding:16px}
 .lista__nome{flex:1;font-weight:700}.lista__num{font-weight:900;color:var(--azul)}
 .lista__vazio{color:var(--mut);cursor:default}
 .cargo__acoes{margin-top:4px;display:flex;gap:12px;align-items:center}
-.fixo{font-size:13px;font-weight:700;color:#8a6a00}
 .mini{font:inherit;font-size:15px;font-weight:700;padding:10px 14px;border-radius:10px;border:2px solid var(--azul);background:#fff;color:var(--azul);cursor:pointer;min-height:44px}
 .mini--link{border:0;background:none;text-decoration:underline;padding:10px 0}
 .painel{background:#fff;border-radius:20px;padding:16px;margin-top:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -47,10 +48,21 @@ main{max-width:640px;margin:0 auto;padding:16px}
 .check{display:flex;gap:10px;align-items:center;margin-top:12px;font-weight:600}
 .check input{width:22px;height:22px}
 .previa-box canvas{width:100%;max-width:380px;height:auto;display:block;margin:0 auto;border:1px dashed #9aa3b8;border-radius:8px}
-.acoes{display:grid;gap:10px}
-.btn{font:inherit;font-weight:800;font-size:17px;padding:14px;border-radius:14px;border:2px solid var(--azul);background:#fff;color:var(--azul);cursor:pointer;min-height:52px}
-.btn--zap{background:#1fae57;border-color:#1fae57;color:#fff}
-.btn--azul{background:var(--azul);color:#fff}
+.btn{font:inherit;font-weight:800;font-size:16px;padding:12px 16px;border-radius:14px;border:2px solid var(--azul);background:#fff;color:var(--azul);cursor:pointer;min-height:52px;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.btn svg{width:22px;height:22px;flex:none}
+.btn--zap{background:#25D366;border-color:#25D366;color:#fff}
+.btn--azul{background:var(--azul);border-color:var(--azul);color:#fff}
+.btn--navy{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn--print{background:#fff;border-color:var(--navy);color:var(--navy)}
+.btn--amarelo{background:var(--amarelo);border-color:var(--amarelo);color:var(--navy)}
+.acoes,.familia{text-align:center}
+.acoes__linha{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 26px}
+.grupo{display:flex;flex-direction:column;align-items:center;gap:6px}
+.grupo__rot{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.grupo__btns{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.familia{border:3px solid var(--amarelo);background:#fffbe8}
+.sigla{display:grid;place-items:center;width:100%;height:100%;background:var(--azul);color:var(--amarelo);font-weight:900;font-size:16px;text-align:center}
+.sigla--peq{width:40px;height:40px;border-radius:8px;font-size:11px;flex:none}
 .btn:active,.mini:active{transform:scale(.98)}
 .rodape{max-width:640px;margin:16px auto 32px;padding:0 16px;text-align:center;color:var(--mut);font-size:14px}
 .peq{font-size:12px}
@@ -61,7 +73,6 @@ main{max-width:640px;margin:0 auto;padding:16px}
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#12305c;color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:60}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 #printArea{display:none}
-@media (min-width:700px){.acoes{grid-template-columns:1fr 1fr}.btn--zap{grid-column:1/-1}}
 
 /* ---------- impressão: só a folha A4 montada em canvas ---------- */
 @page{size:A4;margin:0}
