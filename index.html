@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0054A6">
+<title>Colinha Eleitoral — Marco Vinholi 1002</title>
+<meta name="description" content="Monte sua colinha de voto, salve como imagem ou PDF e leve na carteira. Marco Vinholi, Deputado Federal 1002.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topo">
+  <img src="img/logo_negativa.png" alt="Marco Vinholi 1002" width="54" height="46">
+  <span>Colinha Eleitoral</span>
+</header>
+
+<main>
+  <section class="intro">
+    <h1>Para não errar na hora do voto</h1>
+    <p>Monte sua colinha, baixe, imprima ou envie pelo WhatsApp. <strong>Nada é gravado</strong>: tudo fica no seu aparelho.</p>
+  </section>
+
+  <p id="carregando" class="carregando">Carregando candidatos…</p>
+  <section id="cargos" class="cargos" aria-label="Cargos, na ordem da urna"></section>
+
+  <section class="painel codigo">
+    <h2>Seu código</h2>
+    <p class="dica">Guarde este código: quem digitar ele abaixo recebe a mesma colinha.</p>
+    <div class="codigo__linha"><output id="codigo" class="codigo__valor">—</output><button type="button" id="btnCopiaCodigo" class="mini">Copiar código</button></div>
+    <form id="formCodigo" class="codigo__linha">
+      <input id="entradaCodigo" type="text" placeholder="Tenho um código" autocomplete="off" autocapitalize="characters" aria-label="Digite um código">
+      <button type="submit" class="mini">Carregar</button>
+    </form>
+  </section>
+
+  <section class="painel">
+    <h2>Estilo</h2>
+    <div class="estilos">
+      <label class="estilo"><input type="radio" name="estilo" value="cor" checked><span><b>Colorida</b>Igual à tela, com fotos</span></label>
+      <label class="estilo"><input type="radio" name="estilo" value="pb"><span><b>Preto e branco</b>Economiza tinta</span></label>
+      <label class="estilo"><input type="radio" name="estilo" value="grande"><span><b>P&amp;B, números grandes</b>Fácil de ler</span></label>
+    </div>
+    <label class="check"><input type="checkbox" id="comFoto" checked disabled> Incluir fotos dos candidatos</label>
+  </section>
+
+  <section class="painel previa-box">
+    <h2>Pré-visualização</h2>
+    <canvas id="previa" width="1080" height="1965" aria-label="Pré-visualização da colinha"></canvas>
+  </section>
+
+  <section class="painel acoes">
+    <h2>Compartilhar, baixar e imprimir</h2>
+    <button type="button" id="btnZap" class="btn btn--zap">Enviar pelo WhatsApp</button>
+    <button type="button" id="btnLink" class="btn">Copiar link</button>
+    <button type="button" id="btnJpg" class="btn">Baixar imagem (JPG)</button>
+    <button type="button" id="btnPdf1" class="btn">Baixar PDF — 1 por folha</button>
+    <button type="button" id="btnPdf4" class="btn">Baixar PDF — 4 por folha</button>
+    <button type="button" id="btnPrint1" class="btn">Imprimir</button>
+    <button type="button" id="btnPrint4" class="btn">Imprimir 4 por folha</button>
+  </section>
+</main>
+
+<footer class="rodape">
+  <p>Recorte na linha e leve na carteira. Celular não entra na cabine.</p>
+  <p>Marco Vinholi, candidato a Deputado Federal por São Paulo, nº 1002 — Republicanos.<br>Propaganda eleitoral · CNPJ 68.411.256/0001-25</p>
+  <p class="peq">Dados de candidaturas: TSE (Dados Abertos).</p>
+</footer>
+
+<div id="modal" class="modal" hidden>
+  <div class="modal__caixa" role="dialog" aria-modal="true" aria-labelledby="modalTit">
+    <h3 id="modalTit">Falta escolher</h3>
+    <p id="modalTxt"></p>
+    <button type="button" id="modalEscolher" class="btn btn--azul">Escolher agora</button>
+    <button type="button" id="modalBranco" class="btn">Votar em BRANCO nesses cargos</button>
+  </div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="printArea" aria-hidden="true"></div>
+
+<script src="js/codigo.js"></script>
+<script src="js/render.js"></script>
+<script src="js/exportar.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

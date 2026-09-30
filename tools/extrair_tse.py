@@ -17,8 +17,8 @@ UF = (sys.argv[1] if len(sys.argv) > 1 else "SP").upper()
 RAIZ = Path(__file__).resolve().parent.parent
 TMP = RAIZ / "tools" / ".cache"; TMP.mkdir(exist_ok=True)
 CDN = "https://cdn.tse.jus.br/estatistica/sead/"
-LADO = 120          # miniatura quadrada em px
-QUALIDADE = 72
+LADO = 150          # miniatura quadrada em px
+QUALIDADE = 70
 
 CARGOS = {"DEPUTADO FEDERAL": "fed", "DEPUTADO ESTADUAL": "est", "SENADOR": "sen",
           "GOVERNADOR": "gov", "PRESIDENTE": "pres"}
