@@ -182,14 +182,21 @@
       return Render.garantir(todasFotos()).then(function () { return estadoRender(); });
     });
   }
-  function link() { return location.origin + location.pathname + "?c=" + codigoAtual(); }
+  function link() { return SITE + "?c=" + codigoAtual(); }
 
   /* ---------- ações ---------- */
   function nomeArq(s) { return "colinha-marco-vinholi-1002-" + modo + (grande ? "-numeros-grandes" : "") + (s || ""); }
   function acao(id, fn) { $(id).addEventListener("click", function () { preparar().then(function (e) { if (e) fn(e); }); }); }
 
+  var SITE = /^(localhost|127\.)/.test(location.hostname) ? "https://www.marcovinholi.com.br/colinha/" : location.origin + location.pathname;
+  function textoZap() {
+    return "Essa é a minha colinha! 🗳️ Já sei em quem votar e não erro na urna." +
+      "\nMonte a sua em 1 minuto: " + SITE +
+      "\n\nMeu código (copie e cole no site para gerar igual):\n" + codigoAtual();
+  }
+  // Envia a IMAGEM da colinha (com o texto e o código)
   acao("#btnZap", function (e) {
-    var texto = "Essa é a minha! Monte a sua: " + link();
+    var texto = textoZap();
     Exportar.blobJpg(Render.card(e, modo, fotosOn, grande), 0.92).then(function (b) {
       var arq = new File([b], nomeArq(".jpg"), { type: "image/jpeg" });
       if (navigator.canShare && navigator.canShare({ files: [arq] })) {
@@ -200,6 +207,10 @@
         aviso("Imagem baixada. Anexe no WhatsApp.");
       }
     });
+  });
+  // Envia só o LINK do site (o WhatsApp mostra a miniatura da página) + código
+  $("#btnZapLink").addEventListener("click", function () {
+    garantirCompleto().then(function (ok) { if (ok) window.open("https://wa.me/?text=" + encodeURIComponent(textoZap()), "_blank", "noopener"); });
   });
   acao("#btnJpg", function (e) { Exportar.blobJpg(Render.card(e, modo, fotosOn, grande), 0.92).then(function (b) { Exportar.baixar(b, nomeArq(".jpg")); aviso("Imagem baixada."); }); });
   acao("#btnPdf1", function (e) { Exportar.pdf(Exportar.folha(e, modo, fotosOn, 1, grande)).then(function (b) { Exportar.baixar(b, nomeArq("-1-por-folha.pdf")); aviso("PDF baixado."); }); });

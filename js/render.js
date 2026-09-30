@@ -4,8 +4,7 @@
   var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v2/fotos/";
   var LOCAL = "fotos/";
   var FONTE = "Montserrat, 'Arial Black', Arial, sans-serif";
-  var LEGAL1 = "Marco Vinholi, candidato a Deputado Federal por São Paulo, nº 1002 — Republicanos";
-  var LEGAL2 = "Propaganda eleitoral · CNPJ 68.411.256/0001-25";
+  var LEGAL = "Marco Vinholi - Republicanos - CNPJ 68.411.256/0001-25";
 
   /* ---------- fotos ---------- */
   var cache = {}, cinza = {};
@@ -104,15 +103,15 @@
       tx = G.x + 18 + G.fotoLado + 24;
     }
     var maxW = G.x + G.w - 22 - tx;
-    var cargo = r.rot, nome = r.tipo === "cand" ? r.cand.nome : (r.tipo === "branco" ? "" : "");
-    var ly = G.y + G.labelY;
-    c.font = fonte(700, G.labelPx); var wc = c.measureText(cargo + "  ").width;
-    var px = G.labelPx;
-    if (nome) { c.font = fonte(900, px); var wn = c.measureText(nome).width;
-      if (wc + wn > maxW) px = Math.max(16, Math.floor(px * maxW / (wc + wn))); }
-    c.font = fonte(700, px); wc = c.measureText(cargo + "  ").width;
-    texto(c, cargo, tx, ly, 700, px, T.ink, "left");
-    if (nome) texto(c, nome, tx + wc, ly, 900, px, T === COR ? "#1a3e94" : T.ink, "left");
+    var cargo = r.rot + "  ", nome = r.tipo === "cand" ? r.cand.nome : "", part = r.tipo === "cand" && r.cand.partido ? "  ·  " + r.cand.partido : "";
+    var ly = G.y + G.labelY, px = G.labelPx;
+    function larg(p) { c.font = fonte(700, p); var a = c.measureText(cargo).width, b = c.measureText(part).width;
+      c.font = fonte(900, p); return a + c.measureText(nome).width + b; }
+    while (larg(px) > maxW && px > 14) px -= 1;
+    var cx = tx;
+    texto(c, cargo, cx, ly, 700, px, T.ink, "left"); c.font = fonte(700, px); cx += c.measureText(cargo).width;
+    if (nome) { texto(c, nome, cx, ly, 900, px, T === COR ? "#1a3e94" : T.ink, "left"); c.font = fonte(900, px); cx += c.measureText(nome).width; }
+    if (part) texto(c, part, cx, ly, 700, px, T === COR ? "#3a5fb0" : T.ink, "left");
     var by = G.y + G.h - G.digH - G.padB;
     if (r.tipo === "cand") {
       var fim = digitos(c, T, r.cand.num, tx, by, G.digW, G.digH, G.digGap, G.digPx);
@@ -129,13 +128,11 @@
     }
   }
 
-  function rodape(c, T, W, y, codigo, grande) {
-    var s = grande ? 1.0 : 1.0;
-    texto(c, LEGAL1, W / 2, y, 500, 22 * s, "#333", "center", W - 100);
-    texto(c, LEGAL2, W / 2, y + 30, 500, 22 * s, "#333", "center", W - 100);
+  function rodape(c, T, W, y, codigo) {
+    texto(c, LEGAL, W / 2, y, 600, 24, "#222", "center", W - 100);
     if (codigo) {
-      texto(c, "Código desta colinha: " + codigo, W / 2, y + 74, 800, 27, T.ink, "center", W - 100);
-      texto(c, "Monte a sua em marcovinholi.com.br/colinha", W / 2, y + 106, 600, 22, "#333", "center", W - 100);
+      texto(c, "Código desta colinha: " + codigo, W / 2, y + 48, 800, 27, T.ink, "center", W - 100);
+      texto(c, "Monte a sua em marcovinholi.com.br/colinha", W / 2, y + 82, 600, 22, "#333", "center", W - 100);
     }
   }
 
@@ -169,7 +166,7 @@
     texto(c, "MARCO VINHOLI", 200, 1713, 900, 56, modo === "cor" ? "#fff" : "#000", "left", 450);
     bloco(c, 660, 1682, 240, 60, 14, modo === "cor" ? "#0f2350" : "#000", null);
     texto(c, "1002", 780, 1714, 900, 46, modo === "cor" ? "#ffc82c" : "#fff", "center");
-    rodape(c, T, W, 1810, estado.codigo, false);
+    rodape(c, T, W, 1822, estado.codigo);
     return cv;
   }
 
@@ -195,7 +192,7 @@
     G.digW = Math.min(112, Math.floor((1040 - 22 - G.btnW - 26 - tx0 - 4 * G.digGap) / 5));
     G.digPx = 104;
     estado.rows.forEach(function (r, i) { G.y = 196 + i * 198; linha(c, T, r, G); });
-    rodape(c, T, W, 1402, estado.codigo, true);
+    rodape(c, T, W, 1410, estado.codigo);
     return cv;
   }
 
