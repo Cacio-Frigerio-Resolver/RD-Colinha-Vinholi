@@ -32,14 +32,17 @@
   <symbol id="i-print" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.400" stroke-linecap="round" stroke-linejoin="round" d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/></symbol>
 </svg>
 
-<header class="topo">
-  <a class="topo__logo" href="#inicio" aria-label="Marco Vinholi 1002"><img src="img/logo_negativa.png" alt="Vinholi 1002" width="54" height="46"></a>
-  <nav class="topo__nav" aria-label="Seções"><a href="#monte">Monte sua colinha</a><a href="#imprimir">Imprimir</a></nav>
-  <a class="btn btn--verde btn--sm" href="#monte">Montar minha colinha</a>
-</header>
+<nav class="site-nav" aria-label="Menu principal"><div class="inner">
+  <a href="https://www.marcovinholi.com.br/" aria-label="Marco Vinholi 1002"><img src="img/selo-negativo.png" alt="Marco Vinholi 1002 — Deputado Federal por São Paulo" width="58" height="46"></a>
+  <ul>
+    <li><a href="https://www.marcovinholi.com.br/">Início</a></li>
+    <li><a href="https://www.marcovinholi.com.br/trajetoria.html">Trajetória</a></li>
+    <li><a href="https://www.marcovinholi.com.br/noticias.html">Notícias</a></li>
+  </ul>
+  <a class="cta" href="https://linktr.ee/marcovinholi" target="_blank" rel="noopener noreferrer">Apoiar a campanha</a>
+</div></nav>
 
 <section class="hero" id="inicio">
-  <div class="hero__wm" aria-hidden="true">VINHOLI<br>1002</div>
   <div class="hero__txt">
     <p class="pill">Eleição · domingo, 4 de outubro · 8h às 17h</p>
     <h1>Para não errar<br>na hora do voto <mark>LEVE A COLINHA</mark></h1>
@@ -52,6 +55,7 @@
     </div>
   </div>
   <div class="hero__fone">
+    <div class="hero__wm" aria-hidden="true">VINHOLI<br>1002</div>
     <div class="fone fone--inclinado"><div class="fone__tela"><canvas id="previaHero" width="1080" height="1965" aria-label="Exemplo da colinha"></canvas></div></div>
     <div class="selo-data"><small>Eleição</small><b>4 de outubro</b><span>domingo · 8h às 17h</span></div>
   </div>
@@ -139,10 +143,12 @@
 </section>
 
 <footer class="rodape">
-  <img src="img/logo_negativa.png" alt="Vinholi 1002" width="72" height="61">
-  <p><b>Recorte na linha e leve na carteira. Celular não entra na cabine.</b></p>
-  <p>Marco Vinholi - Republicanos - CNPJ 68.411.256/0001-25</p>
-  <p class="peq">Dados de candidaturas: TSE (Dados Abertos).</p>
+  <div class="rodape__in">
+    <div class="rodape__linha"><span class="rodape__num">Marco Vinholi 1002 · Republicanos</span><a href="https://www.marcovinholi.com.br/politica-de-privacidade.html">Política de privacidade</a></div>
+    <p>Material de campanha eleitoral — Eleições 2026. Marco Vinholi, candidato a Deputado Federal por São Paulo, nº 1002 — Republicanos. CNPJ 68.411.256/0001-25. É proibida a reprodução deste conteúdo com fins eleitorais diversos dos autorizados por lei.</p>
+    <p class="rodape__aviso"><b>Recorte na linha e leve na carteira. Celular não entra na cabine.</b> · Dados de candidaturas: TSE (Dados Abertos).</p>
+    <a class="credito" href="https://www.resolverdigital.com.br" target="_blank" rel="noopener noreferrer"><span>Desenvolvido por Resolver Digital</span><img src="img/resolver-digital-icone.png" alt="Resolver Digital" width="20" height="20" loading="lazy"></a>
+  </div>
 </footer>
 
 <div id="modal" class="modal" hidden>

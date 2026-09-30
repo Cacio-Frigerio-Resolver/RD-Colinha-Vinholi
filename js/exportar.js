@@ -1,6 +1,7 @@
 /* Folhas A4, JPG, PDF (escrito à mão a partir do JPG) e impressão. */
 (function (g) {
   var AVISO = "Recorte na linha e leve na carteira. Celular não entra na cabine.";
+  var TAM_UNICA_MM = 180;                    // altura da colinha única (~ um pouco maior que uma mão aberta)
   var PX = 1654 / 210;                       // A4 a 200 dpi: 1654 x 2339
   var F = Render.fonte;
 
@@ -22,7 +23,7 @@
     var cartao = Render.card(estado, modo, fotosOn, grande), prop = cartao.width / cartao.height;
     if (n === 1) {
       // canto superior esquerdo da folha; corte só à direita e embaixo
-      var ch = grande ? 268 : 226, cw = ch * prop, x = 6, y = 6;
+      var ch = TAM_UNICA_MM, cw = ch * prop, x = 6, y = 6;
       c.drawImage(cartao, x * PX, y * PX, cw * PX, ch * PX);
       var lx = (x + cw + 3) * PX, ly = (y + ch + 3) * PX;
       tracejada(c, lx, 0, lx, ly); tracejada(c, 0, ly, lx, ly);

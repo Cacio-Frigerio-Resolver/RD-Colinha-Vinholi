@@ -1,5 +1,5 @@
 /* Desenho da colinha em canvas (sem bibliotecas).
- * modos: "cor" (colorida), "pb" (preto e branco), "grande" (P&B, números grandes). */
+ * modos: "cor" (colorida) e "pb" (preto e branco); o quarto argumento liga "números grandes". */
 (function (g) {
   var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v2/fotos/";
   var LOCAL = "fotos/";
@@ -144,7 +144,7 @@
   }
 
   /* ---------- layout padrão (cor / pb): 1080 x 1965 ---------- */
-  function padrao(estado, modo, fotosOn) {
+  function padrao(estado, modo, fotosOn, ehGrande) {
     var T = modo === "cor" ? COR : PB, W = 1080, H = estado.mock ? 1722 : 1792;
     var cv = document.createElement("canvas"); cv.width = W; cv.height = H; var c = cv.getContext("2d");
     c.fillStyle = "#fff"; c.fillRect(0, 0, W, H);
@@ -163,42 +163,17 @@
       texto(c, "LEVE A COLINHA", 540, 274, 900, 78, "#000", "center", 680);
     }
     pilulaData(c, T, W, 358, 700, 44, 26);
-    var G = { x: 50, w: 980, h: 180, fotoLado: 150, digW: 68, digH: 78, digGap: 10, digPx: 62, labelPx: 30, labelY: 46, padB: 22,
-      btnW: 190, btnH: 50, btnPx: 26, fotosOn: fotosOn };
+    // "Números grandes": mesmo cartão (mesmas dimensões), com algarismos bem maiores
+    var G = ehGrande
+      ? { x: 50, w: 980, h: 180, fotoLado: 150, digW: 88, digH: 112, digGap: 8, digPx: 96, labelPx: 27, labelY: 30, padB: 18, btnW: 190, btnH: 56, btnPx: 26, fotosOn: fotosOn }
+      : { x: 50, w: 980, h: 180, fotoLado: 150, digW: 68, digH: 78, digGap: 10, digPx: 62, labelPx: 30, labelY: 46, padB: 22, btnW: 190, btnH: 50, btnPx: 26, fotosOn: fotosOn };
     estado.rows.forEach(function (r, i) { G.y = 436 + i * 202; linha(c, T, r, G); });
     rodape(c, T, W, 1664, estado.codigo, estado.mock);
     return cv;
   }
 
-  /* ---------- layout P&B com números grandes: 1080 x 1527 (proporção A4) ---------- */
-  function grande(estado, modo, fotosOn) {
-    var T = modo === "cor" ? COR : PB, W = 1080, H = 1527;
-    var cv = document.createElement("canvas"); cv.width = W; cv.height = H; var c = cv.getContext("2d");
-    c.fillStyle = "#fff"; c.fillRect(0, 0, W, H);
-    if (modo === "cor") {
-      var gr = c.createRadialGradient(W, 0, 0, W, 0, 1000); gr.addColorStop(0, "#d3effc"); gr.addColorStop(1, "rgba(255,255,255,0)");
-      c.fillStyle = gr; c.fillRect(0, 0, W, 1100);
-    }
-    texto(c, "Para não errar na hora do voto", W / 2, 52, 800, 46, T.ink, "center", W - 100);
-    if (modo === "cor") {
-      bloco(c, 258, 100, 580, 76, 6, "#ffc82c", null); bloco(c, 250, 92, 580, 76, 6, "#0a4fb0", null);
-      texto(c, "LEVE A COLINHA", 540, 131, 900, 52, "#fff", "center", 540);
-    } else {
-      bloco(c, 250, 92, 580, 76, 6, "#fff", "#000", 5);
-      texto(c, "LEVE A COLINHA", 540, 131, 900, 52, "#000", "center", 540);
-    }
-    pilulaData(c, T, W, 182, 640, 38, 22);
-    var G = { x: 40, w: 1000, h: 178, fotoLado: 130, digH: 112, digGap: 8, labelPx: 32, labelY: 34, padB: 16, btnW: 210, btnH: 58, btnPx: 26, fotosOn: fotosOn };
-    var tx0 = 40 + (fotosOn ? 18 + 130 + 24 : 22);
-    G.digW = Math.min(112, Math.floor((1040 - 22 - G.btnW - 26 - tx0 - 4 * G.digGap) / 5));
-    G.digPx = 104;
-    estado.rows.forEach(function (r, i) { G.y = 236 + i * 190; linha(c, T, r, G); });
-    rodape(c, T, W, 1402, estado.codigo, estado.mock);
-    return cv;
-  }
-
   function card(estado, modo, fotosOn, ehGrande) {
-    return ehGrande ? grande(estado, modo, fotosOn) : padrao(estado, modo, fotosOn);
+    return padrao(estado, modo, fotosOn, ehGrande);
   }
 
   g.Render = { card: card, garantir: garantir, fonte: FONTE };
