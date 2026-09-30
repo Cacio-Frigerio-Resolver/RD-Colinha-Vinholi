@@ -129,9 +129,9 @@
     }
   }
 
-  function rodape(c, T, W, y, codigo) {
+  function rodape(c, T, W, y, codigo, mock) {
     texto(c, LEGAL, W / 2, y, 600, 24, "#222", "center", W - 100);
-    if (codigo) {
+    if (codigo && !mock) {
       texto(c, "Código desta colinha: " + codigo, W / 2, y + 48, 800, 27, T.ink, "center", W - 100);
       texto(c, "Monte a sua em marcovinholi.com.br/colinha", W / 2, y + 82, 600, 22, "#333", "center", W - 100);
     }
@@ -145,7 +145,7 @@
 
   /* ---------- layout padrão (cor / pb): 1080 x 1965 ---------- */
   function padrao(estado, modo, fotosOn) {
-    var T = modo === "cor" ? COR : PB, W = 1080, H = 1965;
+    var T = modo === "cor" ? COR : PB, W = 1080, H = estado.mock ? 1722 : 1792;
     var cv = document.createElement("canvas"); cv.width = W; cv.height = H; var c = cv.getContext("2d");
     c.fillStyle = "#fff"; c.fillRect(0, 0, W, H);
     if (modo === "cor") {
@@ -166,15 +166,7 @@
     var G = { x: 50, w: 980, h: 180, fotoLado: 150, digW: 68, digH: 78, digGap: 10, digPx: 62, labelPx: 30, labelY: 46, padB: 22,
       btnW: 190, btnH: 50, btnPx: 26, fotosOn: fotosOn };
     estado.rows.forEach(function (r, i) { G.y = 436 + i * 202; linha(c, T, r, G); });
-    // faixa do candidato
-    texto(c, "DEPUTADO FEDERAL · REPUBLICANOS", W / 2, 1664, 800, 26, T.ink, "center");
-    if (modo === "cor") { var g2 = c.createLinearGradient(150, 0, 930, 0); g2.addColorStop(0, "#0a4fb0"); g2.addColorStop(1, "#19b4ee");
-      bloco(c, 150, 1688, 780, 112, 30, g2, null); }
-    else bloco(c, 150, 1688, 780, 112, 30, "#fff", "#000", 5);
-    texto(c, "MARCO VINHOLI", 200, 1745, 900, 56, modo === "cor" ? "#fff" : "#000", "left", 450);
-    bloco(c, 660, 1714, 240, 60, 14, modo === "cor" ? "#0f2350" : "#000", null);
-    texto(c, "1002", 780, 1746, 900, 46, modo === "cor" ? "#ffc82c" : "#fff", "center");
-    rodape(c, T, W, 1856, estado.codigo);
+    rodape(c, T, W, 1664, estado.codigo, estado.mock);
     return cv;
   }
 
@@ -201,7 +193,7 @@
     G.digW = Math.min(112, Math.floor((1040 - 22 - G.btnW - 26 - tx0 - 4 * G.digGap) / 5));
     G.digPx = 104;
     estado.rows.forEach(function (r, i) { G.y = 236 + i * 190; linha(c, T, r, G); });
-    rodape(c, T, W, 1402, estado.codigo);
+    rodape(c, T, W, 1402, estado.codigo, estado.mock);
     return cv;
   }
 

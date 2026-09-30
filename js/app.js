@@ -150,7 +150,7 @@
   function todasFotos() { return CARGOS.map(function (c) { return st[c.k].tipo === "cand" ? st[c.k].cand.sq : null; }); }
   function desenharPrevia() {
     agendado = false;
-    var cv = Render.card(estadoRender(), modo, fotosOn, grande);
+    var em = estadoRender(); em.mock = true; var cv = Render.card(em, modo, fotosOn, grande);
     [previa, $("#previaHero")].forEach(function (t) { if (!t) return; t.width = cv.width; t.height = cv.height; t.getContext("2d").drawImage(cv, 0, 0); });
     $("#codigo").textContent = codigoAtual();
   }
@@ -247,7 +247,9 @@
     if (c) { if (!aplicarCodigo(c)) aviso("Código do link inválido."); }
     montarLinhas();
     var fonteOk = document.fonts && document.fonts.load ? Promise.all([document.fonts.load("900 40px Montserrat"), document.fonts.load("500 20px Montserrat")]).catch(function () {}) : Promise.resolve();
+    mudou();   // desenha e gera o código já no carregamento; refaz quando as fontes chegam
     fonteOk.then(mudou);
+    setTimeout(mudou, 2500);
     $("#carregando").hidden = true;
   }).catch(function () { $("#carregando").textContent = "Não foi possível carregar a lista de candidatos. Atualize a página."; });
 })();
