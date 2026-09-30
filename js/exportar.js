@@ -15,14 +15,14 @@
   }
 
   /* n = 1 ou 4 cartões por folha. Retorna canvas A4. */
-  function folha(estado, modo, fotosOn, n) {
+  function folha(estado, modo, fotosOn, n, grande) {
     var cv = document.createElement("canvas"); cv.width = 1654; cv.height = 2339;
     var c = cv.getContext("2d"); c.fillStyle = "#fff"; c.fillRect(0, 0, cv.width, cv.height);
     c.imageSmoothingQuality = "high";
-    var cartao = Render.card(estado, modo, fotosOn), prop = cartao.width / cartao.height;
+    var cartao = Render.card(estado, modo, fotosOn, grande), prop = cartao.width / cartao.height;
     if (n === 1) {
       // canto superior esquerdo da folha; corte só à direita e embaixo
-      var ch = modo === "grande" ? 268 : 226, cw = ch * prop, x = 6, y = 6;
+      var ch = grande ? 268 : 226, cw = ch * prop, x = 6, y = 6;
       c.drawImage(cartao, x * PX, y * PX, cw * PX, ch * PX);
       var lx = (x + cw + 3) * PX, ly = (y + ch + 3) * PX;
       tracejada(c, lx, 0, lx, ly); tracejada(c, 0, ly, lx, ly);

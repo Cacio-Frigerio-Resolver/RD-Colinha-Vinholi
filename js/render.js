@@ -175,12 +175,21 @@
 
   /* ---------- layout P&B com números grandes: 1080 x 1527 (proporção A4) ---------- */
   function grande(estado, modo, fotosOn) {
-    var T = PB, W = 1080, H = 1527;
+    var T = modo === "cor" ? COR : PB, W = 1080, H = 1527;
     var cv = document.createElement("canvas"); cv.width = W; cv.height = H; var c = cv.getContext("2d");
     c.fillStyle = "#fff"; c.fillRect(0, 0, W, H);
-    texto(c, "Para não errar na hora do voto", W / 2, 52, 800, 46, "#000", "center", W - 100);
-    bloco(c, 250, 92, 580, 76, 6, "#fff", "#000", 5);
-    texto(c, "LEVE A COLINHA", 540, 131, 900, 52, "#000", "center", 540);
+    if (modo === "cor") {
+      var gr = c.createRadialGradient(W, 0, 0, W, 0, 1000); gr.addColorStop(0, "#d3effc"); gr.addColorStop(1, "rgba(255,255,255,0)");
+      c.fillStyle = gr; c.fillRect(0, 0, W, 1100);
+    }
+    texto(c, "Para não errar na hora do voto", W / 2, 52, 800, 46, T.ink, "center", W - 100);
+    if (modo === "cor") {
+      bloco(c, 258, 100, 580, 76, 6, "#ffc82c", null); bloco(c, 250, 92, 580, 76, 6, "#0a4fb0", null);
+      texto(c, "LEVE A COLINHA", 540, 131, 900, 52, "#fff", "center", 540);
+    } else {
+      bloco(c, 250, 92, 580, 76, 6, "#fff", "#000", 5);
+      texto(c, "LEVE A COLINHA", 540, 131, 900, 52, "#000", "center", 540);
+    }
     var G = { x: 40, w: 1000, h: 186, fotoLado: 130, digH: 112, digGap: 8, labelPx: 32, labelY: 34, padB: 16, btnW: 210, btnH: 58, btnPx: 26, fotosOn: fotosOn };
     var tx0 = 40 + (fotosOn ? 18 + 130 + 24 : 22);
     G.digW = Math.min(112, Math.floor((1040 - 22 - G.btnW - 26 - tx0 - 4 * G.digGap) / 5));
@@ -190,8 +199,8 @@
     return cv;
   }
 
-  function card(estado, modo, fotosOn) {
-    return modo === "grande" ? grande(estado, modo, fotosOn) : padrao(estado, modo, fotosOn);
+  function card(estado, modo, fotosOn, ehGrande) {
+    return ehGrande ? grande(estado, modo, fotosOn) : padrao(estado, modo, fotosOn);
   }
 
   g.Render = { card: card, garantir: garantir, fonte: FONTE };

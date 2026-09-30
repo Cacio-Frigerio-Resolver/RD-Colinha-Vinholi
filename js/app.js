@@ -10,14 +10,14 @@
     { k: "sen1", rot: "SENADOR (A)", lista: "sen" },
     { k: "sen2", rot: "SENADOR (A)", lista: "sen" },
     { k: "gov", rot: "GOVERNADOR (A)", lista: "gov" },
-    { k: "pres", rot: "PRESIDENTE (A)", lista: "pres" }
+    { k: "pres", rot: "PRESIDENTE", lista: "pres" }
   ];
   var PADRAO = { sen1: 222, sen2: 111, gov: 10 };
-  var dados = null, st = {}, modo = "cor", fotosOn = true;
+  var dados = null, st = {}, modo = "cor", fotosOn = true, grande = false;
 
   var norm = function (s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
   function objs(arr) { return arr.map(function (a) { return { num: a[0], nome: a[1], partido: a[2], sq: a[3], n: norm(a[1]), p: norm(a[2]) }; }); }
-  function candLegenda(p) { return { num: p.num, nome: "VOTAR NO PARTIDO " + p.sigla, partido: "", sq: "", legenda: true, sigla: p.sigla }; }
+  function candLegenda(p) { return { num: p.num, nome: "VOTO NA LEGENDA · " + p.sigla, partido: "", sq: "", legenda: true, sigla: p.sigla }; }
   function achar(lista, num) { var l = dados[lista]; for (var i = 0; i < l.length; i++) if (l[i].num === num) return l[i]; return null; }
 
   /* ---------- dados ---------- */
@@ -150,7 +150,7 @@
   function todasFotos() { return CARGOS.map(function (c) { return st[c.k].tipo === "cand" ? st[c.k].cand.sq : null; }); }
   function desenharPrevia() {
     agendado = false;
-    var cv = Render.card(estadoRender(), modo, fotosOn); previa.width = cv.width; previa.height = cv.height;
+    var cv = Render.card(estadoRender(), modo, fotosOn, grande); previa.width = cv.width; previa.height = cv.height;
     previa.getContext("2d").drawImage(cv, 0, 0);
     $("#codigo").textContent = codigoAtual();
   }
@@ -185,12 +185,12 @@
   function link() { return location.origin + location.pathname + "?c=" + codigoAtual(); }
 
   /* ---------- ações ---------- */
-  function nomeArq(s) { return "colinha-marco-vinholi-1002-" + modo + (s || ""); }
+  function nomeArq(s) { return "colinha-marco-vinholi-1002-" + modo + (grande ? "-numeros-grandes" : "") + (s || ""); }
   function acao(id, fn) { $(id).addEventListener("click", function () { preparar().then(function (e) { if (e) fn(e); }); }); }
 
   acao("#btnZap", function (e) {
     var texto = "Essa é a minha! Monte a sua: " + link();
-    Exportar.blobJpg(Render.card(e, modo, fotosOn), 0.92).then(function (b) {
+    Exportar.blobJpg(Render.card(e, modo, fotosOn, grande), 0.92).then(function (b) {
       var arq = new File([b], nomeArq(".jpg"), { type: "image/jpeg" });
       if (navigator.canShare && navigator.canShare({ files: [arq] })) {
         navigator.share({ files: [arq], text: texto }).catch(function () {});
@@ -201,11 +201,11 @@
       }
     });
   });
-  acao("#btnJpg", function (e) { Exportar.blobJpg(Render.card(e, modo, fotosOn), 0.92).then(function (b) { Exportar.baixar(b, nomeArq(".jpg")); aviso("Imagem baixada."); }); });
-  acao("#btnPdf1", function (e) { Exportar.pdf(Exportar.folha(e, modo, fotosOn, 1)).then(function (b) { Exportar.baixar(b, nomeArq("-1-por-folha.pdf")); aviso("PDF baixado."); }); });
-  acao("#btnPdf4", function (e) { Exportar.pdf(Exportar.folha(e, modo, fotosOn, 4)).then(function (b) { Exportar.baixar(b, nomeArq("-4-por-folha.pdf")); aviso("PDF baixado."); }); });
-  acao("#btnPrint1", function (e) { Exportar.imprimir(Exportar.folha(e, modo, fotosOn, 1)); });
-  acao("#btnPrint4", function (e) { Exportar.imprimir(Exportar.folha(e, modo, fotosOn, 4)); });
+  acao("#btnJpg", function (e) { Exportar.blobJpg(Render.card(e, modo, fotosOn, grande), 0.92).then(function (b) { Exportar.baixar(b, nomeArq(".jpg")); aviso("Imagem baixada."); }); });
+  acao("#btnPdf1", function (e) { Exportar.pdf(Exportar.folha(e, modo, fotosOn, 1, grande)).then(function (b) { Exportar.baixar(b, nomeArq("-1-por-folha.pdf")); aviso("PDF baixado."); }); });
+  acao("#btnPdf4", function (e) { Exportar.pdf(Exportar.folha(e, modo, fotosOn, 4, grande)).then(function (b) { Exportar.baixar(b, nomeArq("-4-por-folha.pdf")); aviso("PDF baixado."); }); });
+  acao("#btnPrint1", function (e) { Exportar.imprimir(Exportar.folha(e, modo, fotosOn, 1, grande)); });
+  acao("#btnPrint4", function (e) { Exportar.imprimir(Exportar.folha(e, modo, fotosOn, 4, grande)); });
 
   function copiar(txt, msg) {
     var f = function () { var t = document.createElement("textarea"); t.value = txt; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); } catch (x) {} t.remove(); aviso(msg); };
@@ -221,14 +221,13 @@
 
   /* ---------- estilo ---------- */
   function ajustarEstilo() {
-    var m = $("input[name=estilo]:checked").value; modo = m;
-    var cb = $("#comFoto"); cb.disabled = m === "cor"; if (m === "cor") cb.checked = true;
-    fotosOn = cb.checked; agendar();
+    modo = $("input[name=estilo]:checked").value; grande = $("#numGrandes").checked; fotosOn = $("#comFoto").checked; agendar();
   }
   Array.prototype.forEach.call(document.querySelectorAll("input[name=estilo]"), function (r) {
-    r.addEventListener("change", function () { var cb = $("#comFoto"); if (r.value !== "cor") cb.checked = false; ajustarEstilo(); });
+    r.addEventListener("change", function () { $("#comFoto").checked = r.value === "cor"; ajustarEstilo(); });
   });
   $("#comFoto").addEventListener("change", ajustarEstilo);
+  $("#numGrandes").addEventListener("change", ajustarEstilo);
 
   /* ---------- início ---------- */
   carregarDados().then(function () {
