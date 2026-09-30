@@ -37,9 +37,8 @@ img,svg,canvas{max-width:100%}
 /* ---------- hero ---------- */
 .hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 85% 10%,#1a6fd0 0%,var(--az) 35%,var(--azesc) 100%);padding:44px 20px 60px;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
 .hero>*{position:relative;z-index:1}
-.hero__wm{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-family:"Archivo Black",sans-serif;font-size:min(13.5vw,118px);line-height:.86;color:rgba(255,255,255,.13);text-align:center;pointer-events:none;z-index:0;white-space:nowrap}
-.hero__fone .fone,.hero__fone .selo-data{position:relative;z-index:1}
-.hero__fone .selo-data{position:absolute}
+.hero__bglogo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(44vw,600px);max-width:none;opacity:.14;pointer-events:none;user-select:none;z-index:0}
+.hero__conj{position:relative;z-index:1}
 .hero__txt{max-width:600px;justify-self:end}
 .pill{display:inline-block;margin:0 0 16px;background:var(--am);color:var(--azesc);font-weight:800;font-size:13px;padding:8px 16px;border-radius:99px}
 .hero h1{font-size:clamp(30px,5vw,54px);color:#fff}
@@ -50,11 +49,11 @@ img,svg,canvas{max-width:100%}
 .hero__nome{margin:10px 0 20px;font-size:19px}
 .hero__cta{display:flex;flex-wrap:wrap;gap:12px}
 .hero__fone{position:relative;display:grid;place-items:center;padding:10px 10px 30px}
-.selo-data{position:absolute;left:0;bottom:8%;background:#0b1f4d;color:#fff;border-radius:18px;padding:14px 20px;transform:rotate(-6deg);box-shadow:0 12px 30px rgba(0,0,0,.4);line-height:1.15}
+.selo-data{position:absolute;left:-64px;bottom:42px;z-index:3;background:#0b1f4d;color:#fff;border-radius:18px;padding:14px 22px;transform:rotate(-6deg);box-shadow:0 14px 34px rgba(0,0,0,.45),0 0 0 3px var(--am);line-height:1.15}
 .selo-data small{display:block;font-size:13px;font-weight:600;opacity:.85}
 .selo-data b{display:block;font-family:"Archivo Black",sans-serif;font-weight:400;font-size:26px;color:var(--am)}
 .selo-data span{font-size:13px;font-weight:700}
-@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:28px}.hero__txt{justify-self:center}.selo-data{left:6%}}
+@media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:28px}.hero__txt{justify-self:center}.selo-data{left:-14px}}
 
 /* ---------- celular (grafite, ilha dinâmica, botões laterais) ---------- */
 .fone{position:relative;width:min(290px,76vw);background:linear-gradient(150deg,#3a3f4a 0%,#0d0f14 45%,#22262e 100%);border-radius:48px;padding:10px;box-shadow:inset 0 0 0 2px #626977,0 0 0 1px rgba(255,255,255,.08),0 32px 60px rgba(0,0,0,.5)}
@@ -155,17 +154,18 @@ img,svg,canvas{max-width:100%}
 .passos{margin:0 0 18px;padding-left:20px;font-weight:700;text-align:left;display:inline-block}
 .imprimir .btn--ghost{border-color:var(--azesc);color:var(--azesc)}
 
-/* rodapé (igual ao do site principal) */
-.rodape{background:#231F20;color:#fff;padding:36px 16px 28px;font-size:14px}
-.rodape__in{max-width:1260px;margin:0 auto;border-top:1px solid #ffffff1f;padding-top:26px}
-.rodape__linha{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline}
-.rodape__num{font-size:15px;color:#ffffffd9}
-.rodape a{color:#ffffff99;font-size:13px}
-.rodape p{color:#ffffff99;font-size:13.5px;line-height:1.6;margin:12px 0 0}
-.rodape__aviso{font-size:12.5px!important}
-.credito{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid #ffffff1f;text-decoration:none}
-.credito span{color:#ffffff99;font-size:13px}
-.credito img{width:20px;height:20px}
+/* rodapé (cópia do rodapé do site principal) */
+.footer{background:#231F20;color:#fff;padding:0}
+.footer .sec-inner{max-width:1100px;margin:0 auto;padding:0 24px}
+.footer .sec-inner.footer-bottom{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center;padding:24px}
+.footer-bottom::before{content:"";flex:1 0 100%;height:0;border-top:1px solid #ffffff1f;margin-bottom:12px}
+.footer-bottom p{flex:1 0 100%;margin:0;color:#ffffff66;font-size:11.5px;line-height:1.6;max-width:none}
+.footer-bottom .num{color:#ffffff99;font-size:12px;white-space:nowrap}
+.footer-bottom .priv{color:#ffffff99;font-size:11.5px;text-decoration:underline}
+.footer-bottom .credito{flex:1 0 100%;display:flex;justify-content:flex-end;align-items:center;gap:8px;padding-top:12px;margin-top:4px;border-top:1px solid #ffffff14;text-decoration:none}
+.footer-bottom .credito span{color:#ffffff80;font-size:11px;transition:color .2s ease}
+.footer-bottom .credito img{height:16px;width:auto;display:block;opacity:.85}
+.footer-bottom .credito:hover span{color:#fff}
 
 /* modal e aviso */
 .modal{position:fixed;inset:0;background:rgba(6,20,50,.65);display:grid;place-items:center;padding:16px;z-index:60}
@@ -184,3 +184,25 @@ img,svg,canvas{max-width:100%}
   #printArea{display:block!important;width:210mm;height:297mm;margin:0;padding:0;overflow:hidden;page-break-after:avoid}
   #printArea img{display:block;width:210mm;height:297mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+
+/* ---------- seção Monte a sua colinha: fundo branco ---------- */
+.monte{background:#fff;color:var(--tx)}
+.monte__cab h2{color:var(--azesc)}
+.monte__cab b{color:var(--az)}
+.monte .chip{background:var(--az);color:#fff}
+.monte .carregando{color:var(--mut)}
+.monte .codigo-bar{background:#eef3fb;border:1px solid #d5deee}
+.monte .codigo-bar input{border:2px solid #c9d3e6}
+.monte .cargo{border:1px solid #dfe6f2;box-shadow:0 4px 14px rgba(6,38,77,.08)}
+.monte .cargo--fixo{border-color:var(--am)}
+.monte .vidro{background:#eef3fb;border:1px solid #d5deee;color:var(--tx);backdrop-filter:none}
+.monte .seg{background:#dfe6f2}
+.monte .seg__op span{color:var(--azesc)}
+.monte .seg__op input:checked+span{background:var(--am);color:var(--azesc)}
+.monte .seg__op input:focus-visible+span{outline-color:var(--az)}
+.monte .tg input{accent-color:var(--az)}
+.monte .codigo__valor{border:2px solid #d5deee}
+.monte .btn--ghost{border-color:var(--az);color:var(--az)}
+.monte .acoes h3{color:var(--azesc)}
+.monte .grupo__rot{color:var(--mut)}
+.monte .acoes__nota{color:var(--mut)}
