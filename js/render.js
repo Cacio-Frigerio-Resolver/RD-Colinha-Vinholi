@@ -138,8 +138,8 @@
     var cv = document.createElement("canvas"); cv.width = W; cv.height = H; var c = cv.getContext("2d");
     c.fillStyle = "#fff"; c.fillRect(0, 0, W, H);
     if (modo === "cor") {
-      var gr = c.createLinearGradient(W, 0, 0, 900); gr.addColorStop(0, "#d8f1fd"); gr.addColorStop(1, "rgba(255,255,255,0)");
-      c.fillStyle = gr; c.fillRect(0, 0, W, 900);
+      var gr = c.createRadialGradient(W, 0, 0, W, 0, 1150); gr.addColorStop(0, "#d3effc"); gr.addColorStop(1, "rgba(255,255,255,0)");
+      c.fillStyle = gr; c.fillRect(0, 0, W, 1200);
       var gb = c.createLinearGradient(50, 0, W - 50, 0); gb.addColorStop(0, "#0a4fb0"); gb.addColorStop(1, "#19b4ee");
       c.fillStyle = gb; c.fillRect(50, 50, W - 100, 22);
     } else { c.fillStyle = "#000"; c.fillRect(50, 50, W - 100, 8); }

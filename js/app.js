@@ -144,7 +144,7 @@
   function mudou() {
     Render.garantir(todasFotos()).then(agendar); agendar();
   }
-  function agendar() { if (!agendado) { agendado = true; requestAnimationFrame(desenharPrevia); } }
+  function agendar() { $("#codigo").textContent = codigoAtual(); if (!agendado) { agendado = true; requestAnimationFrame(desenharPrevia); } }
 
   /* ---------- avisos e modal ---------- */
   var toastT;
