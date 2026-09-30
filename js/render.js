@@ -4,6 +4,7 @@
   var CDN = "https://cdn.jsdelivr.net/gh/Cacio-Frigerio-Resolver/RD-Colinha-Vinholi@v2/fotos/";
   var LOCAL = "fotos/";
   var FONTE = "Montserrat, 'Arial Black', Arial, sans-serif";
+  var DATA_TXT = "VOTE DOMINGO · 4 DE OUTUBRO · DAS 8h ÀS 17h";
   var LEGAL = "Marco Vinholi - Republicanos - CNPJ 68.411.256/0001-25";
 
   /* ---------- fotos ---------- */
@@ -136,6 +137,12 @@
     }
   }
 
+  function pilulaData(c, T, W, y, larg, alt, px) {
+    var x = (W - larg) / 2;
+    if (T === COR) bloco(c, x, y, larg, alt, alt / 2, "#0f2350", null); else bloco(c, x, y, larg, alt, alt / 2, "#fff", "#000", 4);
+    texto(c, DATA_TXT, W / 2, y + alt / 2 + 1, 800, px, T === COR ? "#fff" : "#000", "center", larg - 40);
+  }
+
   /* ---------- layout padrão (cor / pb): 1080 x 1965 ---------- */
   function padrao(estado, modo, fotosOn) {
     var T = modo === "cor" ? COR : PB, W = 1080, H = 1965;
@@ -155,18 +162,19 @@
       bloco(c, 178, 216, 724, 112, 6, "#fff", "#000", 5);
       texto(c, "LEVE A COLINHA", 540, 274, 900, 78, "#000", "center", 680);
     }
+    pilulaData(c, T, W, 358, 700, 44, 26);
     var G = { x: 50, w: 980, h: 180, fotoLado: 150, digW: 68, digH: 78, digGap: 10, digPx: 62, labelPx: 30, labelY: 46, padB: 22,
       btnW: 190, btnH: 50, btnPx: 26, fotosOn: fotosOn };
-    estado.rows.forEach(function (r, i) { G.y = 400 + i * 202; linha(c, T, r, G); });
+    estado.rows.forEach(function (r, i) { G.y = 436 + i * 202; linha(c, T, r, G); });
     // faixa do candidato
-    texto(c, "DEPUTADO FEDERAL · REPUBLICANOS", W / 2, 1632, 800, 26, T.ink, "center");
+    texto(c, "DEPUTADO FEDERAL · REPUBLICANOS", W / 2, 1664, 800, 26, T.ink, "center");
     if (modo === "cor") { var g2 = c.createLinearGradient(150, 0, 930, 0); g2.addColorStop(0, "#0a4fb0"); g2.addColorStop(1, "#19b4ee");
-      bloco(c, 150, 1656, 780, 112, 30, g2, null); }
-    else bloco(c, 150, 1656, 780, 112, 30, "#fff", "#000", 5);
-    texto(c, "MARCO VINHOLI", 200, 1713, 900, 56, modo === "cor" ? "#fff" : "#000", "left", 450);
-    bloco(c, 660, 1682, 240, 60, 14, modo === "cor" ? "#0f2350" : "#000", null);
-    texto(c, "1002", 780, 1714, 900, 46, modo === "cor" ? "#ffc82c" : "#fff", "center");
-    rodape(c, T, W, 1822, estado.codigo);
+      bloco(c, 150, 1688, 780, 112, 30, g2, null); }
+    else bloco(c, 150, 1688, 780, 112, 30, "#fff", "#000", 5);
+    texto(c, "MARCO VINHOLI", 200, 1745, 900, 56, modo === "cor" ? "#fff" : "#000", "left", 450);
+    bloco(c, 660, 1714, 240, 60, 14, modo === "cor" ? "#0f2350" : "#000", null);
+    texto(c, "1002", 780, 1746, 900, 46, modo === "cor" ? "#ffc82c" : "#fff", "center");
+    rodape(c, T, W, 1856, estado.codigo);
     return cv;
   }
 
@@ -187,12 +195,13 @@
       bloco(c, 250, 92, 580, 76, 6, "#fff", "#000", 5);
       texto(c, "LEVE A COLINHA", 540, 131, 900, 52, "#000", "center", 540);
     }
-    var G = { x: 40, w: 1000, h: 186, fotoLado: 130, digH: 112, digGap: 8, labelPx: 32, labelY: 34, padB: 16, btnW: 210, btnH: 58, btnPx: 26, fotosOn: fotosOn };
+    pilulaData(c, T, W, 182, 640, 38, 22);
+    var G = { x: 40, w: 1000, h: 178, fotoLado: 130, digH: 112, digGap: 8, labelPx: 32, labelY: 34, padB: 16, btnW: 210, btnH: 58, btnPx: 26, fotosOn: fotosOn };
     var tx0 = 40 + (fotosOn ? 18 + 130 + 24 : 22);
     G.digW = Math.min(112, Math.floor((1040 - 22 - G.btnW - 26 - tx0 - 4 * G.digGap) / 5));
     G.digPx = 104;
-    estado.rows.forEach(function (r, i) { G.y = 196 + i * 198; linha(c, T, r, G); });
-    rodape(c, T, W, 1410, estado.codigo);
+    estado.rows.forEach(function (r, i) { G.y = 236 + i * 190; linha(c, T, r, G); });
+    rodape(c, T, W, 1402, estado.codigo);
     return cv;
   }
 

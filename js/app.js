@@ -69,11 +69,11 @@
     CARGOS.forEach(function (c) {
       var li = document.createElement("article"); li.className = "cargo" + (c.fixo ? " cargo--fixo" : ""); li.id = "linha-" + c.k;
       li.innerHTML =
-        '<div class="cargo__foto"></div><div class="cargo__corpo">' +
-        '<div class="cargo__titulo"><span class="cargo__rot">' + c.rot + '</span> <strong class="cargo__nome"></strong></div>' +
+        '<div class="cargo__topo"><span class="cargo__rot">' + c.rot + '</span><span class="cargo__chip"></span></div>' +
+        '<div class="cargo__meio"><div class="cargo__foto"></div><div class="cargo__corpo">' +
         '<div class="cargo__num"></div>' +
-        '<div class="cargo__busca"><input type="text" inputmode="search" autocomplete="off" placeholder="Digite o nome, o número ou a sigla do partido" aria-label="Buscar ' + c.rot.toLowerCase() + '"><ul class="lista" role="listbox" hidden></ul></div>' +
-        '<div class="cargo__acoes"></div></div>';
+        '<div class="cargo__busca"><input type="text" inputmode="search" autocomplete="off" placeholder="' + (c.legenda ? "Nome, número ou sigla do partido" : "Digite o nome, o número ou a sigla") + '" aria-label="Buscar ' + c.rot.toLowerCase() + '"><ul class="lista" role="listbox" hidden></ul></div>' +
+        '<div class="cargo__nome"></div><div class="cargo__acoes"></div></div></div>';
       elCargos.appendChild(li);
       ligarBusca(c, li);
       pintar(c.k);
@@ -83,7 +83,7 @@
   function pintar(k) {
     var c = CARGOS.filter(function (x) { return x.k === k; })[0], s = st[k], li = $("#linha-" + k);
     var foto = $(".cargo__foto", li), nome = $(".cargo__nome", li), num = $(".cargo__num", li), busca = $(".cargo__busca", li), ac = $(".cargo__acoes", li);
-    li.dataset.tipo = s.tipo; foto.innerHTML = ""; num.innerHTML = ""; ac.innerHTML = "";
+    li.dataset.tipo = s.tipo; $(".cargo__chip", li).textContent = c.fixo ? "✓ candidato fixo" : s.tipo === "cand" ? "✓ preenchido" : s.tipo === "branco" ? "voto em branco" : "escolha um candidato"; foto.innerHTML = ""; num.innerHTML = ""; ac.innerHTML = "";
     if (s.tipo === "cand") {
       if (s.cand.legenda) { foto.innerHTML = "<b class='sigla'></b>"; $(".sigla", foto).textContent = s.cand.sigla; }
       else { var im = new Image(); im.alt = s.cand.nome; im.src = fotoUrl(s.cand.sq); im.onerror = function () { im.remove(); }; foto.appendChild(im); }
@@ -150,8 +150,8 @@
   function todasFotos() { return CARGOS.map(function (c) { return st[c.k].tipo === "cand" ? st[c.k].cand.sq : null; }); }
   function desenharPrevia() {
     agendado = false;
-    var cv = Render.card(estadoRender(), modo, fotosOn, grande); previa.width = cv.width; previa.height = cv.height;
-    previa.getContext("2d").drawImage(cv, 0, 0);
+    var cv = Render.card(estadoRender(), modo, fotosOn, grande);
+    [previa, $("#previaHero")].forEach(function (t) { if (!t) return; t.width = cv.width; t.height = cv.height; t.getContext("2d").drawImage(cv, 0, 0); });
     $("#codigo").textContent = codigoAtual();
   }
   function mudou() {
