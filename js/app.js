@@ -62,7 +62,11 @@
 
   /* ---------- lista de cargos (editor) ---------- */
   var elCargos = $("#cargos");
-  function fotoUrl(sq) { return CDN + "fotos/" + sq + ".jpg"; }
+  // As fotos são hospedadas junto com a página (fotos/); o jsDelivr fica só como reserva.
+  function fotoUrl(sq) { return "fotos/" + sq + ".jpg"; }
+  function fotoReserva(img, sq, falhou) {
+    img.onerror = function () { img.onerror = falhou; img.src = CDN + "fotos/" + sq + ".jpg"; };
+  }
 
   function montarLinhas() {
     elCargos.innerHTML = "";
@@ -86,7 +90,7 @@
     li.dataset.tipo = s.tipo; $(".cargo__chip", li).textContent = c.fixo ? "✓ candidato fixo" : s.tipo === "cand" ? "✓ preenchido" : s.tipo === "branco" ? "voto em branco" : "escolha um candidato"; foto.innerHTML = ""; num.innerHTML = ""; ac.innerHTML = "";
     if (s.tipo === "cand") {
       if (s.cand.legenda) { foto.innerHTML = "<b class='sigla'></b>"; $(".sigla", foto).textContent = s.cand.sigla; }
-      else { var im = new Image(); im.alt = s.cand.nome; im.src = fotoUrl(s.cand.sq); im.onerror = function () { im.remove(); }; foto.appendChild(im); }
+      else { var im = new Image(); im.alt = s.cand.nome; im.src = fotoUrl(s.cand.sq); fotoReserva(im, s.cand.sq, function () { im.remove(); }); foto.appendChild(im); }
       nome.textContent = s.cand.nome + (s.cand.partido ? " · " + s.cand.partido : "");
       String(s.cand.num).split("").forEach(function (d) { var b = document.createElement("i"); b.textContent = d; num.appendChild(b); });
       var ok = document.createElement("span"); ok.className = "confirma"; ok.textContent = "CONFIRMA"; num.appendChild(ok);
@@ -126,9 +130,9 @@
       if (!r.length) { ul.innerHTML = '<li class="lista__vazio">Nenhum candidato encontrado</li>'; ul.hidden = false; return; }
       r.forEach(function (x, i) {
         var it = document.createElement("li"); it.setAttribute("role", "option");
-        it.innerHTML = (x.legenda ? '<b class="sigla sigla--peq"></b>' : '<img loading="lazy" src="' + fotoUrl(x.sq) + '" alt="">') + '<span class="lista__nome"></span><span class="lista__num"></span>';
+        it.innerHTML = (x.legenda ? '<b class="sigla sigla--peq"></b>' : '<img src="' + fotoUrl(x.sq) + '" alt="">') + '<span class="lista__nome"></span><span class="lista__num"></span>';
         $(".lista__nome", it).textContent = x.nome + (x.partido ? " · " + x.partido : ""); $(".lista__num", it).textContent = x.num;
-        if (x.legenda) $(".sigla", it).textContent = x.sigla; else $("img", it).onerror = function () { this.style.visibility = "hidden"; };
+        if (x.legenda) $(".sigla", it).textContent = x.sigla; else { var imgLi = $("img", it); fotoReserva(imgLi, x.sq, function () { imgLi.style.visibility = "hidden"; }); }
         it.addEventListener("mousedown", function (e) { e.preventDefault(); escolher(x); });
         ul.appendChild(it);
       });

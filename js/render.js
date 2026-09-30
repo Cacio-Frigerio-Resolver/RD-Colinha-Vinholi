@@ -12,7 +12,7 @@
   function carregarFoto(sq) {
     if (!sq) return Promise.resolve(null);
     if (cache[sq]) return cache[sq];
-    var urls = [CDN + sq + ".jpg", LOCAL + sq + ".jpg"];
+    var urls = [LOCAL + sq + ".jpg", CDN + sq + ".jpg"];   // fotos hospedadas aqui; jsDelivr só como reserva
     cache[sq] = new Promise(function (ok) {
       (function tenta(i) {
         if (i >= urls.length) { ok(null); return; }
